@@ -1,0 +1,40 @@
+
+.circle {   display: block;  position: absolute;
+  
+  opacity:0;
+  z-index:8000;
+  
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  float: left;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.circle.visible { transform:scale(1); opacity:.8;}
+
+.circle {
+  background: #da0000;
+  -webkit-animation: r0 2s 0s ease-out alternate;
+  -moz-animation: r0 2s 0s ease-out alternate;
+  animation: r0 2s 0s ease-out alternate;
+}
+
+
+@-webkit-keyframes r0 {
+  0% {    box-shadow: 0 0 6px 2px rgba(218,0,0, 0), 0 0 0px 0px rgba(218,0,0, 0), 0 0 0px 0px rgba(218,0,0, 0);  }
+  10% {   box-shadow: 0 0 6px 2px rgba(218,0,0, 1), 0 0 12px 10px rgba(218,0,0, 0), 0 0 8px 10px rgba(218,0,0, 1);  }
+  100% {  box-shadow: 0 0 6px 2px rgba(218,0,0, 0), 0 0 0px 20px rgba(218,0,0, 0), 0 0 0px 20px rgba(218,0,0, 0);  }
+}
+@-moz-keyframes r0 {
+  0% {    box-shadow: 0 0 6px 2px rgba(218,0,0, 0), 0 0 0px 0px rgba(218,0,0, 0), 0 0 0px 0px rgba(218,0,0, 0); }
+  10% {   box-shadow: 0 0 6px 2px rgba(218,0,0, 1), 0 0 12px 10px rgba(218,0,0, 0), 0 0 8px 10px rgba(218,0,0, 1); }
+  100% {  box-shadow: 0 0 6px 2px rgba(218,0,0, 0), 0 0 0px 20px rgba(218,0,0, 0), 0 0 0px 20px rgba(218,0,0, 0); }
+}
+@keyframes r0 {
+  0% {    box-shadow: 0 0 6px 2px rgba(218,0,0, 0), 0 0 0px 0px rgba(218,0,0, 0), 0 0 0px 0px rgba(218,0,0, 0);  }
+  10% {   box-shadow: 0 0 6px 2px rgba(218,0,0, 1), 0 0 12px 10px rgba(218,0,0, 0), 0 0 8px 10px rgba(218,0,0, 1);  }
+  100% {  box-shadow: 0 0 6px 2px rgba(218,0,0, 0), 0 0 0px 20px rgba(218,0,0, 0), 0 0 0px 20px rgba(218,0,0, 0);  }
+}

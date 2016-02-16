@@ -1,0 +1,42 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <title>eyetunes</title>
+        <link rel="stylesheet" href="/public/css/main.css">
+        <link rel="stylesheet" href="/public/css/fonts.css">
+        <link rel="stylesheet" href="/public/js/me/mediaelementplayer.css" />
+    </head>
+    <body>
+
+        
+        <div id="video_container">
+            <video style="max-width:100%; width:100%; margin: 0 auto; position: absolute; bottom: 0;" id="mevideo" preload="auto" controls="controls">
+              <source type="video/mp4" src="" />
+            </video> 
+        </div>
+        
+        <div id="title">
+            <p id="theend">/</p>
+            <h2 class="data author"></h2>
+            <h1 class="data title"></h1>
+            <h3>
+                <span class="data country"></span>,
+                <span class="data date"></span>,
+                <span class="data duration"></span>
+                <span class="data music"></span>
+            </h3>
+        </div>
+
+        <div id="wait"><canvas id="ribbon"></canvas><p>eyetunes</p></div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        
+        <script src="/public/js/jquery.js"></script>
+        <script src="/public/js/jquery.wait.js"></script>
+        <script src="/public/js/me/mediaelement-and-player.min.js"></script>
+        <script src="/public/js/data.js"></script>
+        <script src="/public/js/video.js"></script>
+
+    </body>
+</html>

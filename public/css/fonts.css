@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'antiqueolive';
+    src: url('fonts/antiqueolivestd-roman-webfont.eot');
+    src: url('fonts/antiqueolivestd-roman-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/antiqueolivestd-roman-webfont.woff') format('woff'),
+         url('fonts/antiqueolivestd-roman-webfont.ttf') format('truetype'),
+         url('fonts/antiqueolivestd-roman-webfont.svg#AntiqueOliveStdRegular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'antiqueolive';
+    src: url('fonts/antiqueolivestdbold.eot');
+    src: url('fonts/antiqueolivestdbold.eot?#iefix') format('embedded-opentype'),
+         url('fonts/antiqueolivestdbold.woff') format('woff'),
+         url('fonts/antiqueolivestdbold.ttf') format('truetype'),
+         url('fonts/antiqueolivestdbold.svg#antiqueolivestdbold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+
+}
+/*
+
+@font-face{
+    font-family:"antiqueolive-o";
+    src:url("fonts/c85936a9-e254-47d6-8b5f-646792cdebe2.eot");
+    src:url("fonts/c85936a9-e254-47d6-8b5f-646792cdebe2.eot?#iefix") format('embedded-opentype'),
+        url("fonts/9c03d732-64db-4ebe-9442-adc2b394f1dd.woff") format("woff"),
+        url("fonts/bdfbabc8-2404-46b0-a6c6-96e5364daab1.ttf") format("truetype"),
+        url("fonts/4468347b-d1da-4e5b-8036-8d69c501762f.svg#4468347b-d1da-4e5b-8036-8d69c501762f") format("svg");
+    font-weight: 400;
+    font-style: normal;
+    }
+@font-face{
+    font-family:"antiqueolive-o";
+    src:url("fonts/522020b9-aefa-4740-afb2-9786ac5183c6.eot");
+    src:url("fonts/522020b9-aefa-4740-afb2-9786ac5183c6.eot?#iefix") format('embedded-opentype'),
+        url("fonts/648057ee-22f0-4cfb-90c4-dd86a5dfe47b.woff") format("woff"),
+        url("fonts/49f0f276-fc10-4321-84f2-225aeea5464f.ttf") format("truetype"),
+        url("fonts/06f31546-43b3-4208-8ffa-93bcda9cc42d.svg#06f31546-43b3-4208-8ffa-93bcda9cc42d") format("svg");
+    font-weight: 700;
+    font-style: normal;
+    }
+*/

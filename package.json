@@ -1,0 +1,25 @@
+{
+  "name": "eyetunes-server",
+  "version": "1.0.0",
+  "description": "Eyetunes server (table)",
+  "main": "server.js",
+  "dependencies": {
+    "buffertools": "^2.1.2",
+    "caress-server": "^0.2.1",
+    "chai": "^2.2.0",
+    "express": "^3.0.6",
+    "jspack": "^0.0.1",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0",
+    "socket.io": "^0.9.17"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.3"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "Maison des éditions",
+  "license": "MIT"
+}
