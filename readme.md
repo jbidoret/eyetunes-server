@@ -20,3 +20,19 @@ Eyetunes est une co-production [acces)s( cultures électroniques](http://acces-s
 ## Informations
 
 [maisondeseditions.fr/eyetunes/](http://maisondeseditions.fr/eyetunes/)
+
+## Client
+
+Ce dépôt héberge le code serveur (table tactile), et permet d’écouter les données OSC/tuio transmises par [CCV](http://ccv.nuigroup.com/) ou [TSPS](http://www.tsps.cc/) pour les transmettre à l’application node. Les commandes d’ajout à la playlist sont transmises via websockets à l'application cliente eyetunes-client.
+
+## Mise en route
+
+```
+mkdir -p ~/Codo/node/ && cd ~/Codo/node/
+git clone git@github.com:jbidoret/eyetunes-server.git 
+cd eyetunes-server
+npm install
+node server.js
+```
+
+L’application est accessible sur http://127.0.0.1:5000
