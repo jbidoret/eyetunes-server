@@ -10,6 +10,7 @@ Eyetunes, en référence à un populaire lecteur de média, pourrait se traduire
 
 Programmation artistique : [Bertrand Grimault / association Monoquini](http://monoquini.net/)   
 Table tactile & développement : [Guillaume Batista-Pina](http://guillaumebatistapina.com/) & [Julien Bidoret](http://accentgrave.net/)  
+Scénographie : [Christophe Clottes](http://cargocollective.com/clottes)   
 Commissariat d’exposition : [Jean-Marc Saint-Paul](http://nuancierfantone.fr/) & Julien Bidoret  
 Films de : Nicolas Berthelot, Jono Brandel, Chris Casady, D-Fuse, Carlin Diaz, Alexander Dupuis, Jan Goldfuß, Karø Goldt, Nic Hamilton, Manuel Knapp, Lia, Maia Gusberti, David Muth, n:ja, Peder Norrby, Eduardo Omine, Keita Onishi, John Osborne, Michaela Schwentner, Semiconductor, Alexander Stewart, Tekton, Johannes Timpernage, Tinhoko, Shogo Tsurii, Markus Wambganss, Zeitguised, Rogier Van Der Zwaag.
 
