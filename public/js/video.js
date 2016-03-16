@@ -1,3 +1,7 @@
+// utility to pretty print time
+function str_pad_left(string,pad,length) {
+    return (new Array(length+1).join(pad)+string).slice(-length);
+}
 
 $(function(){
 
@@ -6,9 +10,11 @@ $(function(){
 		$title = $('#title'),
 		$wait = $('#wait'),
 		$body = $('body'),
+        current_video_id,
 		current_playlist = [],
 		videos = document.videos,
 		meVideo,
+        clockInterval,
 		title_duration = 4000,
 		first_load=true,
 		waitmode=true,
@@ -45,11 +51,12 @@ $(function(){
 			title.showNextTitle();
 		}			
 
+
 	    
 	});
 
 	/* -----------------------------------------------------------------------------------------
-	Hide cursro
+	Hide cursor (show on move up)
 	------------------------------------------------------------------------------------------*/
 	var mouse = {
 		init: function(){
@@ -73,6 +80,24 @@ $(function(){
 	mouse.initTimeout();
 
 
+
+    var clock = {
+        start:function(){
+            clockInterval = setInterval(function(){
+                var timeleft = Math.floor(mevideo.duration - mevideo.currentTime)
+                //console.log(mevideo.duration + ' ' + mevideo.currentTime + ' ' + timeleft)
+                var minutes = Math.floor(timeleft / 60);
+                var seconds = timeleft - minutes * 60;
+                
+                var finalTime = str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2);
+                //console.log(seconds + ' ' + finalTime)
+                socket.emit('timeupdate', finalTime)    
+            }, 1000)
+        },
+        stop:function(){
+            clearInterval(clockInterval);
+        }
+    }
 	/* -----------------------------------------------------------------------------------------
 	Gestion des <video>
 	------------------------------------------------------------------------------------------*/
@@ -100,6 +125,9 @@ $(function(){
 			        	// supprime le premier élément de la playlist
 			            current_playlist = current_playlist.slice(1);
 
+                        // arrête l’horloge
+                        clock.stop();
+
 			        	// socket emit
 			            socket.emit('remove', 0);
 			            
@@ -112,6 +140,12 @@ $(function(){
 		            	
 
 			        }, false);
+
+                    // mediaElement.addEventListener('timeupdate', function(e) {
+                        
+                    //     //document.getElementById('current-time').innerHTML = mediaElement.currentTime;
+                         
+                    // }, false);
 			         
 			    },
 			})				
@@ -169,7 +203,10 @@ $(function(){
 				.removeClass('visible')
 				.each(function(){ 
 					$video_container.addClass('visible')
-					mevideo.play()
+					socket.emit('playing', 0);
+                    console.log('yo I has playing')
+                    mevideo.play()
+                    clock.start();
 				})
 				
 		},

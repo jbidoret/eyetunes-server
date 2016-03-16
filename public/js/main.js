@@ -34,7 +34,9 @@ $(function(){
 		//console.log('try to remove '+ id + ' from current_playlist');
 		if(current_playlist.length>0){
 			current_playlist = current_playlist.slice(1);
-			$playlist.find('.item').first().remove()			
+
+			playlist.enumerate();
+			//$playlist.find('.item').first().remove()			
 			//console.log('removed '+ id + ' from current_playlist which becomes :')
 			//console.log(current_playlist)
 		} 
@@ -52,7 +54,7 @@ $(function(){
 
 				// Crée une grille des vidéos 
 				var video = videos[i];
-				var $video = $('<div class="video" data-id="' + video.id + '"><div class="bg-video" id="bg-' + video.id + '" style="background-image:url(/public/img/'+ video.id +'/JPEG/t.jpg);"></div></div>');
+				var $video = $('<div class="video" data-id="' + video.id + '"><div class="bg-video" id="bg-' + video.id + '" style="background-image:url(/public/img/'+ video.id +'/JPEG/t.jpg);"><span class="rank"></span></div></div>');
 				
 				$videos_container.append($video);
 
@@ -321,11 +323,23 @@ $(function(){
 			// socket.io envoie l’info au diffuseur
 			socket.emit('added', id);
 		},
+
+		enumerate: function(){
+			$('.rank').text('');
+			for (var i = 0; i < current_playlist.length; i++) {
+				var $whichitem = $('#videos_container .video[data-id='+ current_playlist[i] +']');
+				$whichitem.find('.rank').text(i + 1);
+			}
+		},
 		
 		// création d’un élément dans la playlist
 		createItem: function(id){
-			//console.log('Try to createItem ' + id)
+			playlist.enumerate();
+			console.log('Try to create item ' + id)
 			var video = videos[parseInt(id - 1)];
+			var whichitem = $('#videos_container .video[data-id='+ id +']');
+			console.log(current_playlist);
+			console.log(current_playlist.indexOf(id))
 			if($playlist.children().length < maxVideosInPlaylist + 1){
 				var $item = $('<div class="item video" data-id="'+ video.id +'"><div style="background-image:url(/public/img/'+ video.id +'/JPEG/t.jpg)"></div></div>');
 				$playlist.append($item);

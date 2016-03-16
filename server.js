@@ -49,6 +49,11 @@ app.get('/video/', function (req, res) {
   res.sendfile(__dirname + '/video.html');
 });
 
+app.get('/nu/', function (req, res) {
+  res.sendfile(__dirname + '/nu.html');
+});
+
+
 
 
 function onSocketConnect(socket) {
@@ -70,6 +75,15 @@ function onSocketConnect(socket) {
     socket.on('remove', function(id){
       console.log('remove played video');
       io.sockets.emit('remove', id);
+    });
+
+    socket.on('playing', function(id){
+      console.log('playing video');
+      io.sockets.emit('playing', id);
+    });
+
+    socket.on('timeupdate', function(time){
+      io.sockets.emit('timeupdate', time);
     });
 }
 

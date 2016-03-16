@@ -21,6 +21,13 @@
     font-style: normal;
 
 }
+@font-face {
+    font-family: 'united';
+    src: url('fonts/UnitedSansSmCdBd.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+
+}
 /*
 
 @font-face{
