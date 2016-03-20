@@ -28,6 +28,30 @@
     font-style: normal;
 
 }
+
+@font-face{
+    font-family:"WorkSans";
+    src:url(webfonts/woff2/WorkSans-Medium.woff2);
+    font-weight: 500;
+    }
+@font-face{
+    font-family:"WorkSans";
+    src:url(webfonts/woff2/WorkSans-Regular.woff2);
+    font-weight: 400;
+    }
+@font-face{
+    font-family:"WorkSans";
+    src:url(webfonts/woff2/WorkSans-SemiBold.woff2);
+    font-weight: 600;
+    }
+@font-face{
+    font-family:"WorkSans";
+    src:url(webfonts/woff2/WorkSans-Bold.woff2);
+    font-weight: 700;
+    }    
+
+
+    
 /*
 
 @font-face{
