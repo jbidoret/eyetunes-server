@@ -43,7 +43,7 @@ h1 {
     font-size: 30px;
     margin: 0 0 .25rem;
     line-height: 1.1;
-    letter-spacing: .05em;
+    letter-spacing: .025em;
     text-transform: uppercase;
     }
 .music,
@@ -148,16 +148,15 @@ h1 {
 /*---------------------------------------------------------------------------------------- GRID */
 
 .layouthelper {
-    color: rgba(255,255,255,.6);
-    color: rgba(255,255,255,.6);
+    color: rgba(255,255,255,.4);
     text-shadow:3px 0px black;
 }
 .imageid {
-    color: rgba(255,255,255,.6);
+    color: rgba(255,255,255,.4);
     text-shadow:3px 0px black;
     position: relative; left: 100px;
 }
-//.layouthelper , .imageid{ display: none}
+.layouthelper , .imageid{ display: none}
 
 
 #grid{
@@ -196,21 +195,31 @@ h1 {
             right: 0;
             left: 0;
             bottom: 0;
-            font-size: calc(10px * 5 + 3vh);
+            font-size: calc(10px * 3 + 3vh);
             color: white;
             z-index: 6;
             line-height: 1.2;
             padding-left: .1em;
+            font-weight: 700;
             }
             .rank.waitaminuteplease{
-                -webkit-animation:pulse 1s ease-out infinite;
-                -moz-animation:pulse 1s ease-out infinite;
+                // -webkit-animation:pulse 1s ease-out infinite;
+                // -moz-animation:pulse 1s ease-out infinite;
             }
+        .video.playing:before{
+            content: "";
+            position: absolute;
+            z-index: 5;
+            background: rgba(0,0,0,.4);
+            top: 0; right:0; left:0; bottom: 0;
+            -webkit-animation:pulse 1s ease-out infinite;
+            -moz-animation:pulse 1s ease-out infinite;
+        }
         #bg-9 .rank,
         #bg-2 .rank,
         #bg-17 .rank,
         #bg-18 .rank,
-        #bg-24 .rank,
+        // #bg-24 .rank,
         #bg-25 .rank,
         #bg-28 .rank { color: black}
 
@@ -256,6 +265,11 @@ h1 {
         background:#000 url(img/play.png) no-repeat 20px 50%;
         padding: 10px 20px 7px 60px;
         line-height: 50px;
+        }
+        .img1.playing:after{
+            content:"En cours de lecture";
+            //-webkit-animation:pulse 1s ease-out infinite;
+            //-moz-animation:pulse 1s ease-out infinite;
         }
 
     .griditem p {

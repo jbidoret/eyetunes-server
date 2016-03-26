@@ -265,8 +265,8 @@ $(function(){
 			blink.resetTimeout();
 			var $circle = $('<div class="circle"><span></span><span></span></div>');
 			$circle.css({
-				'left':x>0 ? x : -200,
-				'top':y>0 ? y : -200
+				'left':x>0 ? x : "-200px",
+				'top':y>0 ? y : "-200px"
 			})
 			$('body').append($circle);
 			$circle.addClass('visible');
@@ -440,7 +440,11 @@ $(function(){
 
 			$currentTpl = $nextTpl;
 
+			pages.setPageStatus(currentId);
+
 		},
+
+		
 
 		slideToPrev:function(){
 			var currentId = $currentTpl.data('id'),
@@ -473,15 +477,13 @@ $(function(){
 			})
 
 			$currentTpl = $nextTpl;
-		},
-
-
-		hidePage: function(){
-			$page.removeClass('visible');			
+			pages.setPageStatus(currentId);
 		},
 
 		slideToPage: function(id){
 			// console.log('slideToPage: ' + id)
+
+			pages.setPageStatus(id);
 
 			$('.video').each(function(i){
 				$(this).delay((i++) * 10).velocity("goUp", { 
@@ -504,7 +506,18 @@ $(function(){
 				
 			})
 			$currentTpl = $tpl;
+			
 
+		},
+		
+		setPageStatus:function(currentId){
+			var $tpl = $('#tpl-' + currentId);
+
+			if(current_playlist[0] == currentId){
+				$tpl.find('.img1').addClass('playing')
+			} else{
+				$tpl.find('.img1').removeClass('playing')
+			}
 		}
 	}
 
@@ -574,9 +587,11 @@ $(function(){
 			for (var i = 0; i < current_playlist.length; i++) {
 				var $whichitem = $('.video[data-id='+ current_playlist[i] +']');
 				if(i==0){
+					$whichitem.addClass('playing');
 					$rankplaying = $whichitem.find('.rank');
 					$whichitem.find('.rank').addClass('waitaminuteplease').text('…');
 				} else{
+					$whichitem.removeClass('playing');
 					$whichitem.find('.rank').text("#" + parseInt(i + 1));	
 				}
 				
