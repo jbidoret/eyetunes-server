@@ -12,6 +12,7 @@ $.Velocity.RegisterEffect("goUp", {
     calls: [
         [ { translateY: function(){
         	var t = 0 - (800 + Math.round(Math.random()* 800));
+        	// console.log('goUP calls: ' + t);
         	return t;
         } }, 1, {  } ]
     ]
@@ -29,17 +30,14 @@ $.Velocity.RegisterEffect("goDown", {
 
 $(function(){
 
-	var $currentTpl,
-		$page = $('#page'),
-		$close = $('.back'),
+	var $body = $('body'),
+
 		$playlist = $('#playlist'),
 
 		$grid = $('#grid'),
 		
-		$content = $('#content'),
-		$tpl = $('#tpl'),
-		$add = $('#add'),
-		$body = $('body'),
+		$currentPage,
+
 		$message = $('#message'),
 		$overlay = $('#overlay'),
 		current_playlist = [],
@@ -50,13 +48,13 @@ $(function(){
 		blinks = [],
 		wheight = $(window).height(),
 		wwidth = $(window).width(),
-		collllll=0,
+		rowmodulo=0,
 		nomouse = false,
 		nomousetimeout,
 		//socket = io.connect('http://172.17.200.102:5000');
 		socket = io.connect('http://127.0.0.1:5000');
 
-	var maxVideosInPlaylist = 5;
+	var maxVideosInPlaylist = 6;
 
 	var colheight = colwidth = 100/6;
 	var $rankplaying;
@@ -107,37 +105,40 @@ $(function(){
 			
 			for (var i = 0; i < videos.length; i++) {
 
+				//////////////////////////////// GRILLE DES VIDÉOS
+				//////////////////////////////////////////////////
+
 				// Crée une grille des vidéos 
 				var video = videos[i];
 				var $video = $('<div class="video" data-id="' + video.id + '" id="video-' + video.id + '"><div class="bg-video" id="bg-' + video.id + '" style="background-image:url(/public/img/'+ video.id +'/JPEG/t.jpg);"><span class="rank"><span class="playing"></span></span></div></div>');
 				// grid modulooo !
-				if(i!= 0 && i % 6 == 0) collllll++;
+				if(i!= 0 && i % 6 == 0) rowmodulo++;
 				// append
 				$grid.append($video);
 				// position
 				$video.css({
-					"top": collllll * colheight + "%" ,
+					"top": rowmodulo * colheight + "%" ,
 					"left":  (i % 6) * colwidth + "%",
 					'position': 'absolute'
 				})
 
+				/////////////////////////////////// PAGE DE DÉTAIL
+				//////////////////////////////////////////////////
+
 				// créée les pages de détail, en clonant un template vide issu de l’index.html
-				var $tplclone = $tpl.clone();
-				$tplclone.attr('id', 'tpl-'+video.id)
+				var $page = $('#tpl').clone();
+				$page.attr('id', 'page-'+video.id)
 					.data('id', video.id)
 					.css('display', 'block');
-
-				// ajoute ces pages
 				
-				
-				// populate data à partir du dictionnaire json issu de data.js (document.videos)
+				// intègre les données à partir du dictionnaire json issu de data.js (document.videos)
 				for(var key in video){
 					if (video.hasOwnProperty(key)) {
-					    $tplclone.find('.' + key).html(video[key]);				    
+					    $page.find('.' + key).html(video[key]);				    
 				  	}
 				}
 
-				var $innergrid = $tplclone.find('.grid');
+				var $innergrid = $page.find('.grid');
 
 				// crées les 7 images affichables dans le template
 				for (var j = 1; j <= 8; j++) {
@@ -156,7 +157,7 @@ $(function(){
 				};
 
 
-				// position les éléments de la page sur la grille de mise en page
+				// positionne les éléments de la page sur la grille de mise en page
 				// le layout est défini en {colonne,ligne} dans data-layout.js
 				
 				if (video.hasOwnProperty('positions')) {
@@ -164,44 +165,46 @@ $(function(){
 					for(var key in positions){
 						if (positions.hasOwnProperty(key)) {
 							
-						    $tplclone.find('.' + key).css({
+						    $page.find('.' + key).css({
 						    	'left': positions[key][0] * colwidth + '%', 
 						    	'top': positions[key][1] * colheight + '%'
 						    }).append($('<span class="layouthelper">' +positions[key][0] + ',' + positions[key][1] + '</span>'));
 
 						    // si un troisième paramètre est passé : special size
 						    if(positions[key].length > 2){
-						    	console.log($tplclone.find('.' + key))
-						    	$tplclone.find('.' + key).attr('size', 'size'+positions[key][2]);
+						    	console.log($page.find('.' + key))
+						    	$page.find('.' + key).attr('size', 'size'+positions[key][2]);
 						    }
 						    var top = wheight + Math.round(Math.random()* wheight/2);
 
 						    // initiate velocity on items
-							$tplclone.find('.' + key).velocity({
+							$page.find('.' + key).velocity({
 								translateY: top + "px"
 							}, { duration: 0 });
 					  	}
 					}
 				}		
 
-
-				$grid.append($tplclone);
+				$grid.append($page);
 				
-				pages.initNavEvents($tplclone);		
 			};
 
+
+			// Yo. I haz videos initialized
+			// So, now: 
 			
 
-			// init playlist
+			// initialize playlist
 			playlist.init();
 
-			// init pages
+			// initialize pages and navigation
 			pages.init();
+			pages.initAllNavEvents();
 
-			// init blink
+			// initialize blink mode
 			blink.init();
 
-			// init nomouse
+			// initialize nomouse mode
 			mouse.init();
 			mouse.initTimeout();
 
@@ -211,11 +214,11 @@ $(function(){
 
 	/* -----------------------------------------------------------------------------------------
 	Mouse listener
+	Add / remove CSS class : body.nomouse, body.nomouse * {cursor: none;}
 	------------------------------------------------------------------------------------------*/
 
 	var mouse = {
-		init: function(){
-			
+		init: function(){			
 			$body.on('mousemove', function(){
 				$body.removeClass('nomouse')
 				clearTimeout(nomousetimeout);
@@ -243,35 +246,38 @@ $(function(){
 	            drag_vertical: false
 	        })
 	        .bind("touch hold tap doubletap", function(ev) {
+	        	console.log('clck:' + ev.originalEvent.clientX + ',' + ev.originalEvent.clientY)
+	        	if(ev.originalEvent.clientX==null || ev.originalEvent.clientY==null){
+	        		return false;	
+	        	} 
 	            clck.Klik(ev.originalEvent.clientX, ev.originalEvent.clientY)
 	        })
-	        .bind("swipe", function(ev) {
-	            if($page.hasClass('visible')){
-	            	if(ev.direction=='right'){
-	            		pages.slideToPrev()
-	            	} else if(ev.direction=='left') {
-	            		pages.slideToNext()
-	            	} else if(ev.direction='up'){
-	            		pages.slideToGrid()
-	            	}
-	            }
+	        .bind("swipe", function(ev) {	            
+            	if(ev.direction=='right'){
+            		pages.slideToPrev()
+            	} else if(ev.direction=='left') {
+            		pages.slideToNext()
+            	} else if(ev.direction='up'){
+            		pages.slideToGrid()
+            	}	            
 	        });
 
+	        // mouse mode : )
 			$('body').on('click', function(e){
 				clck.Klik(e.pageX, e.pageY)				
 			})			
 		},
+
 		Klik: function(x, y){
 			blink.resetTimeout();
-			var $circle = $('<div class="circle"><span></span><span></span></div>');
+			var $circle = $('#circle');
+			$circle.addClass('visible');
 			$circle.css({
 				'left':x>0 ? x : "-200px",
 				'top':y>0 ? y : "-200px"
 			})
-			$('body').append($circle);
-			$circle.addClass('visible');
 			var s = setTimeout(function() {
-				$circle.removeClass('visible').wait(1000).remove()
+				$circle.removeClass('visible');
 			}, 500)
 		}
 	}
@@ -359,66 +365,93 @@ $(function(){
 	            drag_vertical: false
 	        })
 	        .bind("touch hold tap doubletap click", function(ev) {
-	        	// avoid event to be triggered twice
-	        	if(avoidDoubleEvent == false){
+
+	        	if(ev.originalEvent.clientX != null && ev.originalEvent.clientY != null && avoidDoubleEvent == false){
+		        	
+		        	console.log('hammered .video');
 	        		avoidDoubleEvent = true;
 	        		var s = setTimeout(function(){
 	        			avoidDoubleEvent = false;
 	        		}, 250)
 	        		// slide to page
 	        		pages.slideToPage($(this).attr("data-id"))	
-	        	}
+		        	
+		        }
 	            
 	        })
 		},
 
+		
 		// init nav events on each page
-		initNavEvents:function($tpl){
+		initAllNavEvents:function(){
 			
-			$tpl.find('.next').bind("touch hold tap doubletap click", function(ev) {
-	            pages.slideToNext();	          
+			$('.next').hammer({
+	            prevent_default: false,
+	            drag_vertical: false
+	        }).bind("touch hold tap doubletap click", function(ev) {
+	        	if(ev.originalEvent.clientX != null && ev.originalEvent.clientY != null && avoidDoubleEvent == false) {
+	        		avoidDoubleEvent = true;
+	        		var s = setTimeout(function(){
+	        			avoidDoubleEvent = false;
+	        		}, 250)
+	        		pages.slideToNext();	          
+	        	}
 	        })
-	        $tpl.find('.prev').bind("touch hold tap doubletap click", function(ev) {
-	            pages.slideToPrev();
+
+	        $('.prev').hammer({
+	            prevent_default: false,
+	            drag_vertical: false
+	        }).bind("touch hold tap doubletap click", function(ev) {
+	           if(ev.originalEvent.clientX != null && ev.originalEvent.clientY != null && avoidDoubleEvent == false) {
+	           		avoidDoubleEvent = true;
+	        		var s = setTimeout(function(){
+	        			avoidDoubleEvent = false;
+	        		}, 250)
+	           		pages.slideToPrev();
+	            }
 	        })
-	        $tpl.find('.back').bind("touch hold tap doubletap click", function(ev) {
-	            pages.slideToGrid();
+
+	        $('.back').hammer({
+	            prevent_default: false,
+	            drag_vertical: false
+	        }).bind("touch hold tap doubletap click", function(ev) {
+	           	if(ev.originalEvent.clientX != null && ev.originalEvent.clientY != null && avoidDoubleEvent == false) {
+	           		avoidDoubleEvent = true;
+	        		var s = setTimeout(function(){
+	        			avoidDoubleEvent = false;
+	        		}, 250)
+	           		pages.slideToGrid();
+	           	}
 	        })
-	        $tpl.find('.huge').bind("touch hold tap doubletap click", function(ev) {
-	        	playlist.addVideo();
+
+	        $('.huge').hammer({
+	            prevent_default: false,
+	            drag_vertical: false
+	        }).bind("touch hold tap doubletap click", function(ev) {
+	        	if(ev.originalEvent.clientX != null && ev.originalEvent.clientY != null && avoidDoubleEvent == false) {
+	        		avoidDoubleEvent = true;
+	        		var s = setTimeout(function(){
+	        			avoidDoubleEvent = false;
+	        		}, 250)
+	        		playlist.addVideo();
+	        	}
 	        })
+
 		},
 
-		slideToGrid:function(){
-
-			$('#grid .video').reverse().each(function(i){
-				$(this).delay((i++) * 10).velocity("goDown", { 
-					duration: transitionDuration,
-					
-				})
-			})
-
-		    // initiate velocity on items
-			$currentTpl.find('.griditem').each(function(){
-				var top = wheight + Math.round(Math.random()* wheight/2);
-				$(this).velocity({
-					translateY: top + "px"
-				}, { duration: transitionDuration });
-			})
-				
-		},
+		
 
 		slideToNext:function(){
-			var currentId = $currentTpl.data('id'),
+			var currentId = $currentPage.data('id'),
 				nextId;
 			if(currentId == videos.length){
 				nextId = 1;
 			} else { 
 				nextId = currentId + 1;
 			}
-			var $nextTpl = $('#tpl-'+nextId);
+			var $nextPage = $('#page-'+nextId);
 
-			$currentTpl.find('.griditem').each(function(){
+			$currentPage.find('.griditem').each(function(){
 				var left = 0 - (wwidth + Math.round(Math.random()* wwidth));
 				$(this).velocity({
 					translateX: left + "px"
@@ -426,7 +459,7 @@ $(function(){
 			})
 
 
-			$nextTpl.find('.griditem').each(function(){
+			$nextPage.find('.griditem').each(function(){
 				var left = wwidth + Math.round(Math.random()* wwidth);
 				$(this).velocity({
 					translateX: left + "px",
@@ -438,7 +471,7 @@ $(function(){
 				}, { duration: transitionDuration });
 			})
 
-			$currentTpl = $nextTpl;
+			$currentPage = $nextPage;
 
 			pages.setPageStatus(currentId);
 
@@ -447,16 +480,16 @@ $(function(){
 		
 
 		slideToPrev:function(){
-			var currentId = $currentTpl.data('id'),
+			var currentId = $currentPage.data('id'),
 				prevId;
 			if(currentId == 1){
 				prevId = 36;
 			} else { 
 				prevId = currentId - 1;
 			}
-			var $nextTpl = $('#tpl-'+prevId);
+			var $nextPage = $('#page-'+prevId);
 
-			$currentTpl.find('.griditem').each(function(){
+			$currentPage.find('.griditem').each(function(){
 				var right = wwidth + Math.round(Math.random()* wwidth);
 				$(this).velocity({
 					translateX: right + "px"
@@ -464,7 +497,7 @@ $(function(){
 			})
 
 
-			$nextTpl.find('.griditem').each(function(){
+			$nextPage.find('.griditem').each(function(){
 				var left = 0 - (wwidth + Math.round(Math.random()* wwidth));
 				$(this).velocity({
 					translateX: left + "px",
@@ -476,12 +509,40 @@ $(function(){
 				}, { duration: transitionDuration });
 			})
 
-			$currentTpl = $nextTpl;
+			$currentPage = $nextPage;
 			pages.setPageStatus(currentId);
 		},
 
+
+		slideToGrid:function(){
+
+			$('.video').reverse().each(function(i){
+				$(this).delay((i++) * 10).velocity("goDown", { 
+					duration: transitionDuration,					
+				})
+			})
+
+		    // initiate velocity on items
+			$currentPage.find('.griditem').each(function(){
+				var top = wheight + Math.round(Math.random()* wheight/2);
+				$(this).velocity({
+					translateY: top + "px"
+				}, { duration: transitionDuration });
+			})
+
+			var s = setTimeout(function(){ 
+				// top + important que la hauteur de la fenêtre pour tous les griditems
+				var top = wheight + Math.round(Math.random()* wheight/2);
+				$('.griditem').velocity({
+					translateX: 0,
+					translateY: top + "px"
+				}, { duration: 0 });
+			},transitionDuration + 1000)
+				
+		},
+
 		slideToPage: function(id){
-			// console.log('slideToPage: ' + id)
+			console.log('slideToPage: ' + id)
 
 			pages.setPageStatus(id);
 
@@ -491,33 +552,33 @@ $(function(){
 				})
 			})
 
-			var $tpl = $('#tpl-' + id);
-			
-			$tpl.find('.griditem').each(function(){
-				var top = wheight + Math.round(Math.random()* wheight/2);
-				$(this).velocity({
-					translateX: 0,
-					translateY: top + "px"
-				}, { duration: 0 });
+			// top + important que la hauteur de la fenêtre pour tous les griditems
+			var top = wheight + Math.round(Math.random()* wheight/2);
+			$('.griditem').velocity({
+				translateX: 0,
+				translateY: top + "px"
+			}, { duration: 0 });
 
+			// page à afficher
+			var $page = $('#page-' + id);
+			$page.find('.griditem').each(function(){
 				$(this).velocity({
 					translateY: "0px"
 				}, { duration: transitionDuration });
 				
 			})
-			$currentTpl = $tpl;
+			$currentPage = $page;
 			
 
 		},
 		
 		setPageStatus:function(currentId){
-			var $tpl = $('#tpl-' + currentId);
+			var $page = $('#page-' + currentId);
 
 			if(current_playlist[0] == currentId){
-				$tpl.find('.img1').addClass('playing')
-			} else{
-				$tpl.find('.img1').removeClass('playing')
-			}
+				$('.img1').removeClass('playing');
+				$page.find('.img1').addClass('playing');
+			} 
 		}
 	}
 
@@ -529,21 +590,14 @@ $(function(){
 	var playlist = {
 		init: function(){
 
-			// ajout d’une vidéo à la playlist
-			$add.hammer({
-	            prevent_default: false,
-	            drag_vertical: false
-	        })
-	        .bind('touch hold tap doubletap click', function(){
-				
-			})
+			
 		},
 		
 
 		// ajout effectif d’une vidéo à la playlist
 		addVideo: function(){
 
-			var current_video_id = $currentTpl.data('id');
+			var current_video_id = $currentPage.data('id');
 
 			
 
@@ -561,9 +615,9 @@ $(function(){
 					messages.show('Cette vidéo est déjà dans la playlist.')
 				}
 				// feed back sur le bouton
-				$currentTpl.find('.add').addClass('nope');
+				$currentPage.find('.add').addClass('nope');
 				var s = setTimeout(function(){
-					$add.removeClass('nope')
+					$currentPage.find('.add').removeClass('nope')
 				}, 550)
 			} 
 			// ajout possible
@@ -584,6 +638,8 @@ $(function(){
 
 		enumerate: function(){
 			$('.rank').empty('').removeClass('waitaminuteplease');
+			$('.video').removeClass('playing');
+			
 			for (var i = 0; i < current_playlist.length; i++) {
 				var $whichitem = $('.video[data-id='+ current_playlist[i] +']');
 				if(i==0){
@@ -591,7 +647,6 @@ $(function(){
 					$rankplaying = $whichitem.find('.rank');
 					$whichitem.find('.rank').addClass('waitaminuteplease').text('…');
 				} else{
-					$whichitem.removeClass('playing');
 					$whichitem.find('.rank').text("#" + parseInt(i + 1));	
 				}
 				

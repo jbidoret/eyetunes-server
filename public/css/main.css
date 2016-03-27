@@ -250,6 +250,7 @@ h1 {
     .gridimage.size2, .gridimage[size="size2"] {height: 33.333%}
     .huge,[size="size3"] { width: 50%; }
     .gridimage.huge,.gridimage[size="size3"] {height: 50%}
+    .size1,[size="size1"] { width: 16.6666%}
 
     .prev { background: url(img/prev.png) no-repeat center center; z-index: 888}
     .next { background: url(img/next.png) no-repeat center center; z-index: 888}

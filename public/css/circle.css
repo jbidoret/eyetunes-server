@@ -1,26 +1,33 @@
 
-.circle {   display: block;  position: absolute;
+#circle {   
+  display: block;  
+  position: absolute;
   
   opacity:0;
-  z-index:8000;
+  z-index:-1;
   
   width: 20px;
   height: 20px;
   border-radius: 50%;
   cursor: pointer;
   float: left;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  transition: all 0.2s;
-}
-.circle.visible { transform:scale(1); opacity:.8;}
+  -webkit-transition: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+  margin: -10px 0 0 -10px;
 
-.circle {
   background: #da0000;
+  
+
+}
+#circle.visible { 
+  z-index:8000;
+  opacity:.8;
   -webkit-animation: r0 2s 0s ease-out alternate;
   -moz-animation: r0 2s 0s ease-out alternate;
   animation: r0 2s 0s ease-out alternate;
 }
+
 
 
 @-webkit-keyframes r0 {

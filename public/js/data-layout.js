@@ -61,7 +61,7 @@ document.videos = [{
     "id":3,
     "positions":{
         "header": [1,0],
-        "info"  : [0,1],
+        "info"  : [1,1,1],
         "prev"  : [0,3],
         "next"  : [5,4],
         "back"  : [3,0],
@@ -131,7 +131,7 @@ document.videos = [{
         "img5"  : [0,4],
         "img6"  : [3,4],
         "img7"  : [0,2],
-        "img8"  : [8,0]
+        "img8"  : [0,12]
     },
     "title": "Stuck in a groove",
     "author": "Clemens Kogler",
