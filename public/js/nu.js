@@ -145,7 +145,7 @@ $(function(){
 					var className = "";
 					
 					if(j==1) {
-						className = "huge size3 img";
+						className = "huge size3 play img";
 					} else if(j == 2) {
 						className = "size2 img";
 					} else {

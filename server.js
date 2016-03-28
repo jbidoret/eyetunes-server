@@ -42,7 +42,7 @@ app.configure(function(){
 
 
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendfile(__dirname + '/nu.html');
 });
 
 app.get('/video/', function (req, res) {
@@ -51,6 +51,10 @@ app.get('/video/', function (req, res) {
 
 app.get('/nu/', function (req, res) {
   res.sendfile(__dirname + '/nu.html');
+});
+
+app.get('/list/', function (req, res) {
+  res.sendfile(__dirname + '/list.html');
 });
 
 

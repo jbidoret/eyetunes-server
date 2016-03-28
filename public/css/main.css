@@ -1,9 +1,6 @@
 
 *, *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
-
-
-
 body, html { 
     padding: 0;
     margin: 0;    
@@ -27,6 +24,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
     }
 
+html.scroll body, html.scroll {
+    overflow: visible;
+}
 /*---------------------------------------------------------------------------------------- TYPO */
 
 
@@ -124,7 +124,52 @@ h1 {
     }
     #message.visible { opacity: 1; bottom: 80px;}
 
-
+/*---------------------------------------------------------------------------------------- LIST */
+#footer,
+.listtitle,
+.listinfo  {
+    margin: 4em;    
+}
+.listtitle > *{
+    max-width: 30em;
+    margin-bottom: 2em
+}
+.listtitle footer{
+    max-width: 100%
+}
+.datatata{
+    font-size: 2em; 
+}
+.totop {
+    margin: 4em 0 
+}
+.totop a { border:none; font-size: 2em}
+.listitem { 
+    margin-bottom: 8em
+}
+.listinfo {
+    max-width: 30em;
+}
+.listinfo p { margin-bottom: .5em}
+.listinfo .info, .listinfo .header { width: 100% !important}
+.listinfo .extra { display: none}
+.listgrid {
+    width: 80%;
+    margin-left: 5px;
+    padding-bottom: 50%;
+    position: relative;
+    overflow: hidden;
+}
+@media (max-width:600px){
+    .datatata{
+    font-size: inherit; 
+}
+    #footer,
+    .listtitle,
+    .listinfo  {
+        margin: 4em 2em;    
+        }
+}
 /*---------------------------------------------------------------------------------------- ANIM */
 
 @-moz-keyframes pulse { 
@@ -202,10 +247,6 @@ h1 {
             padding-left: .1em;
             font-weight: 700;
             }
-            .rank.waitaminuteplease{
-                // -webkit-animation:pulse 1s ease-out infinite;
-                // -moz-animation:pulse 1s ease-out infinite;
-            }
         .video.playing:before{
             content: "";
             position: absolute;
@@ -215,11 +256,12 @@ h1 {
             -webkit-animation:pulse 1s ease-out infinite;
             -moz-animation:pulse 1s ease-out infinite;
         }
-        #bg-9 .rank,
+        #bg-2 .rank,
+        #bg-7 .rank,
         #bg-2 .rank,
         #bg-17 .rank,
         #bg-18 .rank,
-        // #bg-24 .rank,
+        
         #bg-25 .rank,
         #bg-28 .rank { color: black}
 
@@ -255,7 +297,7 @@ h1 {
     .prev { background: url(img/prev.png) no-repeat center center; z-index: 888}
     .next { background: url(img/next.png) no-repeat center center; z-index: 888}
     .back { background: url(img/back.png) no-repeat center center; z-index: 888}
-    .img1:after { 
+    .play:after { 
         content: "Ajouter à la playlist";
         margin: 0 0 .25rem;
         text-transform: uppercase;
@@ -267,10 +309,8 @@ h1 {
         padding: 10px 20px 7px 60px;
         line-height: 50px;
         }
-        .img1.playing:after{
+        .play.playing:after{
             content:"En cours de lecture";
-            //-webkit-animation:pulse 1s ease-out infinite;
-            //-moz-animation:pulse 1s ease-out infinite;
         }
 
     .griditem p {
@@ -278,7 +318,7 @@ h1 {
           -ms-hyphens: auto;
           hyphens: auto;
     }
-    .bio, .url { display: none !important}
+    .griditem .bio, .griditem .url { display: none !important}
     
     h1, h2, h3 { font-weight: 400; }
     
@@ -286,7 +326,8 @@ h1 {
     .music:before { content:' — musique: '; }
     .music:empty:before { content:''; }
 
-    .url { border-bottom: 2px solid; display: inline-block;}
+    a,
+    .url { border-bottom: 2px solid; display: inline-block; text-decoration: none; color: #fff}
 
         
 
