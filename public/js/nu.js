@@ -153,6 +153,9 @@ $(function(){
 					}
 					var $img = $('<div class="griditem gridimage '+ className + j + '" style="background-image:url(/public/img/'+ video.id + '/JPEG/' + j + '.jpg)"></div>');
 					$img.append($('<span class="imageid">' + j + '</span>'));
+					if(j==1) {
+						$img.append($('<span class="clickmetoplay"></span>'));
+					}
 					$innergrid.append($img);
 				};
 
@@ -228,7 +231,7 @@ $(function(){
 		initTimeout:function(){
 			nomousetimeout = setTimeout(function(){
 				$body.addClass('nomouse');
-			}, 4000) // 4 sec
+			}, 400) // 4 sec
 		}
 
 	}
@@ -424,7 +427,7 @@ $(function(){
 	           	}
 	        })
 
-	        $('.huge').hammer({
+	        $('.clickmetoplay').hammer({
 	            prevent_default: false,
 	            drag_vertical: false
 	        }).bind("touch hold tap doubletap click", function(ev) {
