@@ -40,6 +40,10 @@ app.configure(function(){
 });
 
 
+function nocache(req, res, next){
+
+}
+
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/nu.html');
@@ -55,6 +59,10 @@ app.get('/nu/', function (req, res) {
 
 app.get('/list/', function (req, res) {
   res.sendfile(__dirname + '/list.html');
+});
+
+app.get('/data.js', function (req, res) {
+  res.sendfile(__dirname + '/public/js/data-layout.js' );
 });
 
 
@@ -92,5 +100,5 @@ function onSocketConnect(socket) {
 }
 
 server.listen(5000, function(){
-  console.log('listening on *:5000');
+  console.log('Eyetunes server listening on *:5000');
 });
